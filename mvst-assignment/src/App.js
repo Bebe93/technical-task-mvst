@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   const [repos, setRepos] = useState([]);
   const [repoResearch, setRepoResearch] = useState("");
-  //const [username, setUsername] = useState();
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     getRepos();
@@ -14,7 +14,13 @@ function App() {
 
   const getRepos = async () => {
     try {
-      const reposList = await axios.get(`/users/Bebe93/repos`, {});
+      const reposList = await axios.get(
+        `https://api.github.com/users/${username}/repos`,
+        {
+          username: "Bebe93",
+        }
+      );
+      setUsername(username);
       setRepos(reposList.data);
     } catch (error) {
       console.log(error);
