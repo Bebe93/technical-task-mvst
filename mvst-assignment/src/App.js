@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+//import axios from "axios";
 
 import "./App.css";
 
@@ -12,19 +12,18 @@ function App() {
     getRepos();
   }, []);
 
-  const getRepos = async () => {
-    try {
-      const reposList = await axios.get(
-        `https://api.github.com/users/${username}/repos`,
-        {
-          username: "Bebe93",
-        }
-      );
-      setUsername(username);
-      setRepos(reposList.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const getRepos = () => {
+    fetch(`api.github.com/users/${username}/repos`, {
+      username: "example",
+    })
+      .then((res) => res.json())
+      .then((username) => setUsername(username))
+      .then((data) => setRepos(data))
+      // console
+      //   .log(data)
+      //  setUsername(username);
+
+      .catch((error) => console.log(error));
   };
 
   const handleChange = (e) => {
@@ -38,6 +37,8 @@ function App() {
 
   return (
     <div className="App">
+      <h1>My GitHub repositories</h1>
+
       <form>
         <input
           className="me-2"
@@ -55,6 +56,7 @@ function App() {
           Search
         </button>
       </form>
+
       <div className="reposList">
         {/* I not only used map to go through the list of repositories but I also added a filter function, because that's what the search bar is going to do*/}
         {repos
@@ -70,8 +72,10 @@ function App() {
           .map((repo) => {
             if (repo)
               return (
-                <div key={repoResearch.id}>
-                  <h3>{repoResearch.name}</h3>
+                <div key={repo.id}>
+                  <ul>
+                    <li>{repo.name}</li>
+                  </ul>
                 </div>
               );
           })}
